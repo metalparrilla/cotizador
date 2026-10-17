@@ -93,7 +93,7 @@
 <body>
 
 <div class="cotizador-container">
-    <h2>Cotizar Parrilla</h2>
+    <h2>Cotizador de Emparrillados</h2>
     
     <div class="form-group">
         <label for="ancho">Ancho (metros):</label>
@@ -126,7 +126,8 @@
         <div class="precio" id="lbl-precio-pesos">\$0</div>
     </div>
 
-    <a href="#" id="btn-wa" class="btn-whatsapp" target="_blank">Enviar pedido por WhatsApp</a>
+    <!-- Corregido: Se quitó target="_blank" para evitar el bloqueo about:blank#blocked -->
+    <a href="#" id="btn-wa" class="btn-whatsapp">Enviar pedido por WhatsApp</a>
 </div>
 
 <script>
@@ -201,11 +202,11 @@
             const precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(precioPesos);
             document.getElementById("lbl-precio-pesos").textContent = precioFormateado;
             
-            // Texto del mensaje formateado de forma segura
+            // Mensaje estructurado limpio sin caracteres conflictivos
             const mensajeTexto = "Hola! Vengo desde el cotizador web. Me interesa un emparrillado de " + material + " (" + modelo + ") con medidas de " + ancho.toFixed(2) + "m x " + profundidad.toFixed(2) + "m (Superficie: " + area.toFixed(2) + " m2). Precio estimado: " + precioFormateado;
             
-            // Enlace directo final corregido sin variables complejas
-            document.getElementById("btn-wa").href = "https://wa.me" + encodeURIComponent(mensajeTexto);
+            // Corregido: Enlace oficial clásico para evitar bloqueos del navegador
+            document.getElementById("btn-wa").href = "https://whatsapp.com" + encodeURIComponent(mensajeTexto);
         } else {
             document.getElementById("lbl-precio-pesos").textContent = "$ 0";
             document.getElementById("btn-wa").href = "#";
