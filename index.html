@@ -93,7 +93,7 @@
 <body>
 
 <div class="cotizador-container">
-    <h2>Cotizador de Emparrillados</h2>
+    <h2>Cotizar Parrilla</h2>
     
     <div class="form-group">
         <label for="ancho">Ancho (metros):</label>
@@ -130,7 +130,6 @@
 </div>
 
 <script>
-    // Tu lista oficial de costos indexada por Material y Modelo
     const baseCostos = [
         { material: "INOX", modelo: "CL barra hierro", valorM2: 390 },
         { material: "MIX", modelo: "CL barra mix", valorM2: 465 },
@@ -164,20 +163,14 @@
         { material: "HIERRO", modelo: "MEC barra inox brasero vitro", valorM2: 1190 }
     ];
 
-    // Tu valor de cambio de la lista
     const tipoCambio = 1535; 
-    
-    // Tu número de WhatsApp configurado
-    const tuTelefonoWhatsApp = "5491159367696"; 
 
     function cargarModelos() {
         const materialSeleccionado = document.getElementById("material").value;
         const selectorModelo = document.getElementById("modelo");
         
-        // Limpiar modelos anteriores
         selectorModelo.innerHTML = "";
         
-        // Filtrar y añadir modelos correspondientes al material
         const modelosFiltrados = baseCostos.filter(item => item.material === materialSeleccionado);
         
         modelosFiltrados.forEach(item => {
@@ -196,42 +189,32 @@
         const material = document.getElementById("material").value;
         const modelo = document.getElementById("modelo").value;
         
-        // 1. Calcular el área real
         const area = ancho * profundidad;
         document.getElementById("lbl-area").textContent = area.toFixed(2);
         
-        // 2. Buscar el costo por m2
         const registro = baseCostos.find(item => item.material === material && item.modelo === modelo);
         
         if (registro && area > 0) {
-            // 3. Multiplicar Área x Valor m2 x Tipo de Cambio para obtener Pesos
             const precioDolares = area * registro.valorM2;
             const precioPesos = precioDolares * tipoCambio;
             
-            // Formatear número como moneda local (ARS)
             const precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(precioPesos);
             document.getElementById("lbl-precio-pesos").textContent = precioFormateado;
             
-            // 4. Configurar el enlace de WhatsApp
-            const mensajeTexto = `Hola! Vengo desde el cotizador web. Me interesa un emparrillado con estas especificaciones:%0A%0A` +
-                                 `• *Material:* ${material}%0A` +
-                                 `• *Modelo:* ${modelo}%0A` +
-                                 `• *Medidas:* ${ancho.toFixed(2)}m de ancho x ${profundidad.toFixed(2)}m de profundidad%0A` +
-                                 `• *Superficie:* ${area.toFixed(2)} m²%0A%0A` +
-                                 `*Precio estimado:* ${precioFormateado}`;
+            // Texto del mensaje formateado de forma segura
+            const mensajeTexto = "Hola! Vengo desde el cotizador web. Me interesa un emparrillado de " + material + " (" + modelo + ") con medidas de " + ancho.toFixed(2) + "m x " + profundidad.toFixed(2) + "m (Superficie: " + area.toFixed(2) + " m2). Precio estimado: " + precioFormateado;
             
-            document.getElementById("btn-wa").href = `https://wa.me{tuTelefonoWhatsApp}?text=${mensajeTexto}`;
+            // Enlace directo final corregido sin variables complejas
+            document.getElementById("btn-wa").href = "https://wa.me" + encodeURIComponent(mensajeTexto);
         } else {
-            document.getElementById("lbl-precio-pesos").textContent = "\$ 0";
+            document.getElementById("lbl-precio-pesos").textContent = "$ 0";
             document.getElementById("btn-wa").href = "#";
         }
     }
 
-    // Escuchar cambios en los inputs
     document.getElementById("ancho").addEventListener("input", calcularPrecios);
     document.getElementById("profundidad").addEventListener("input", calcularPrecios);
 
-    // Carga inicial
     window.onload = cargarModelos;
 </script>
 
