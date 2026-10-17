@@ -84,6 +84,8 @@
             margin-top: 20px;
             transition: background-color 0.3s ease;
             box-sizing: border-box;
+            cursor: pointer;
+            border: none;
         }
         .btn-whatsapp:hover {
             background-color: #128c7e;
@@ -126,8 +128,8 @@
         <div class="precio" id="lbl-precio-pesos">\$0</div>
     </div>
 
-    <!-- Corregido: Se quitó target="_blank" para evitar el bloqueo about:blank#blocked -->
-    <a href="#" id="btn-wa" class="btn-whatsapp">Enviar pedido por WhatsApp</a>
+    <!-- Cambiado a botón con evento directo para saltear bloqueos de Chrome -->
+    <button onclick="enviarWhatsApp()" class="btn-whatsapp">Enviar pedido por WhatsApp</button>
 </div>
 
 <script>
@@ -188,12 +190,15 @@
         const ancho = parseFloat(document.getElementById("ancho").value) || 0;
         const profundidad = parseFloat(document.getElementById("profundidad").value) || 0;
         const material = document.getElementById("material").value;
-        const modelo = document.getElementById("modelo").value;
+        const modelo = document.getElementById("modelo");
         
         const area = ancho * profundidad;
         document.getElementById("lbl-area").textContent = area.toFixed(2);
         
-        const registro = baseCostos.find(item => item.material === material && item.modelo === modelo);
+        if (modelo.options.length === 0) return;
+        const modeloValue = modelo.value;
+        
+        const registro = baseCostos.find(item => item.material === material && item.modelo === modeloValue);
         
         if (registro && area > 0) {
             const precioDolares = area * registro.valorM2;
@@ -201,16 +206,28 @@
             
             const precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(precioPesos);
             document.getElementById("lbl-precio-pesos").textContent = precioFormateado;
-            
-            // Mensaje estructurado limpio sin caracteres conflictivos
-            const mensajeTexto = "Hola! Vengo desde el cotizador web. Me interesa un emparrillado de " + material + " (" + modelo + ") con medidas de " + ancho.toFixed(2) + "m x " + profundidad.toFixed(2) + "m (Superficie: " + area.toFixed(2) + " m2). Precio estimado: " + precioFormateado;
-            
-            // Corregido: Enlace oficial clásico para evitar bloqueos del navegador
-            document.getElementById("btn-wa").href = "https://whatsapp.com" + encodeURIComponent(mensajeTexto);
         } else {
             document.getElementById("lbl-precio-pesos").textContent = "$ 0";
-            document.getElementById("btn-wa").href = "#";
         }
+    }
+
+    function enviarWhatsApp() {
+        const ancho = parseFloat(document.getElementById("ancho").value) || 0;
+        const profundidad = parseFloat(document.getElementById("profundidad").value) || 0;
+        const material = document.getElementById("material").value;
+        const modelo = document.getElementById("modelo").value;
+        const precioFormateado = document.getElementById("lbl-precio-pesos").textContent;
+        const area = ancho * profundidad;
+
+        if (area <= 0 || precioFormateado === "$ 0") {
+            alert("Por favor, ingrese medidas válidas antes de enviar.");
+            return;
+        }
+
+        const mensajeTexto = "Hola! Vengo desde el cotizador web. Me interesa un emparrillado de " + material + " (" + modelo + ") con medidas de " + ancho.toFixed(2) + "m x " + profundidad.toFixed(2) + "m (Superficie: " + area.toFixed(2) + " m2). Precio estimado: " + precioFormateado;
+        
+        // Redirección forzada nativa para evitar que Chrome lo considere una ventana emergente bloqueable
+        window.location.href = "https://whatsapp.com" + encodeURIComponent(mensajeTexto);
     }
 
     document.getElementById("ancho").addEventListener("input", calcularPrecios);
