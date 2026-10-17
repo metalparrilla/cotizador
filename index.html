@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador Independiente de Emparrillados</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .cotizador-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #fafafa;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            background-color: #fff;
+        }
+        .resultado-box {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 25px;
+            border-left: 5px solid #2ecc71;
+        }
+        .resultado-box p {
+            margin: 5px 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .resultado-box .precio {
+            font-size: 28px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+        }
+        .btn-whatsapp {
+            display: block;
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        .btn-whatsapp:hover {
+            background-color: #128c7e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="cotizador-container">
+    <h2>Cotizador de Emparrillados</h2>
+    
+    <div class="form-group">
+        <label for="ancho">Ancho (metros):</label>
+        <input type="number" id="ancho" step="0.01" value="1.00" min="0.1">
+    </div>
+
+    <div class="form-group">
+        <label for="profundidad">Profundidad (metros):</label>
+        <input type="number" id="profundidad" step="0.01" value="0.50" min="0.1">
+    </div>
+
+    <div class="form-group">
+        <label for="material">Material:</label>
+        <select id="material" onchange="cargarModelos()">
+            <option value="HIERRO">HIERRO</option>
+            <option value="MIX">MIX</option>
+            <option value="INOX">INOX</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="modelo">Modelo:</label>
+        <select id="modelo" onchange="calcularPrecios()">
+            <!-- Se carga dinámicamente con JavaScript -->
+        </select>
+    </div>
+
+    <div class="resultado-box">
+        <p>Superficie total: <span id="lbl-area">0.50</span> m²</p>
+        <div class="precio" id="lbl-precio-pesos">\$0</div>
+    </div>
+
+    <a href="#" id="btn-wa" class="btn-whatsapp" target="_blank">Enviar pedido por WhatsApp</a>
+</div>
+
+<script>
+    // Tu lista oficial de costos indexada por Material y Modelo
+    const baseCostos = [
+        { material: "INOX", modelo: "CL barra hierro", valorM2: 390 },
+        { material: "MIX", modelo: "CL barra mix", valorM2: 465 },
+        { material: "HIERRO", modelo: "CL ángulo hierro", valorM2: 480 },
+        { material: "INOX", modelo: "CL barra hierro brasero V", valorM2: 515 },
+        { material: "MIX", modelo: "CL barra inox", valorM2: 540 },
+        { material: "HIERRO", modelo: "CL ángulo mix", valorM2: 555 },
+        { material: "INOX", modelo: "CL barra hierro brasero U", valorM2: 565 },
+        { material: "MIX", modelo: "CL ángulo hierro brasero V", valorM2: 595 },
+        { material: "HIERRO", modelo: "CL barra mix brasero V", valorM2: 620 },
+        { material: "INOX", modelo: "MEC barra hierro", valorM2: 625 },
+        { material: "MIX", modelo: "CL ángulo inox", valorM2: 630 },
+        { material: "HIERRO", modelo: "CL ángulo hierro brasero U", valorM2: 645 },
+        { material: "INOX", modelo: "MEC barra hierro brasero abierto", valorM2: 660 },
+        { material: "MIX", modelo: "CL barra mix brasero U", valorM2: 675 },
+        { material: "HIERRO", modelo: "CL ángulo mix brasero V", valorM2: 705 },
+        { material: "INOX", modelo: "MEC barra hierro brasero puerta", valorM2: 710 },
+        { material: "MIX", modelo: "CL barra inox brasero V", valorM2: 740 },
+        { material: "HIERRO", modelo: "CL ángulo mix brasero U", valorM2: 755 },
+        { material: "INOX", modelo: "CL barra inox brasero U", valorM2: 790 },
+        { material: "MIX", modelo: "MEC barra mix", valorM2: 795 },
+        { material: "HIERRO", modelo: "MEC barra mix brasero abierto", valorM2: 805 },
+        { material: "INOX", modelo: "CL ángulo inox brasero V", valorM2: 820 },
+        { material: "MIX", modelo: "MEC barra hierro brasero vitro", valorM2: 840 },
+        { material: "HIERRO", modelo: "MEC barra mix brasero puerta", valorM2: 845 },
+        { material: "INOX", modelo: "CL ángulo inox brasero U", valorM2: 870 },
+        { material: "MIX", modelo: "MEC barra inox", valorM2: 960 },
+        { material: "HIERRO", modelo: "MEC barra mix brasero vitro", valorM2: 975 },
+        { material: "INOX", modelo: "MEC barra inox brasero abierto", valorM2: 1000 },
+        { material: "MIX", modelo: "MEC barra inox brasero puerta", valorM2: 1060 },
+        { material: "HIERRO", modelo: "MEC barra inox brasero vitro", valorM2: 1190 }
+    ];
+
+    // Tu valor de cambio de la lista
+    const tipoCambio = 1535; 
+    
+    // Tu número de WhatsApp configurado
+    const tuTelefonoWhatsApp = "5491159367696"; 
+
+    function cargarModelos() {
+        const materialSeleccionado = document.getElementById("material").value;
+        const selectorModelo = document.getElementById("modelo");
+        
+        // Limpiar modelos anteriores
+        selectorModelo.innerHTML = "";
+        
+        // Filtrar y añadir modelos correspondientes al material
+        const modelosFiltrados = baseCostos.filter(item => item.material === materialSeleccionado);
+        
+        modelosFiltrados.forEach(item => {
+            let opcion = document.createElement("option");
+            opcion.value = item.modelo;
+            opcion.textContent = item.modelo;
+            selectorModelo.appendChild(opcion);
+        });
+        
+        calcularPrecios();
+    }
+
+    function calcularPrecios() {
+        const ancho = parseFloat(document.getElementById("ancho").value) || 0;
+        const profundidad = parseFloat(document.getElementById("profundidad").value) || 0;
+        const material = document.getElementById("material").value;
+        const modelo = document.getElementById("modelo").value;
+        
+        // 1. Calcular el área real
+        const area = ancho * profundidad;
+        document.getElementById("lbl-area").textContent = area.toFixed(2);
+        
+        // 2. Buscar el costo por m2
+        const registro = baseCostos.find(item => item.material === material && item.modelo === modelo);
+        
+        if (registro && area > 0) {
+            // 3. Multiplicar Área x Valor m2 x Tipo de Cambio para obtener Pesos
+            const precioDolares = area * registro.valorM2;
+            const precioPesos = precioDolares * tipoCambio;
+            
+            // Formatear número como moneda local (ARS)
+            const precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(precioPesos);
+            document.getElementById("lbl-precio-pesos").textContent = precioFormateado;
+            
+            // 4. Configurar el enlace de WhatsApp
+            const mensajeTexto = `Hola! Vengo desde el cotizador web. Me interesa un emparrillado con estas especificaciones:%0A%0A` +
+                                 `• *Material:* ${material}%0A` +
+                                 `• *Modelo:* ${modelo}%0A` +
+                                 `• *Medidas:* ${ancho.toFixed(2)}m de ancho x ${profundidad.toFixed(2)}m de profundidad%0A` +
+                                 `• *Superficie:* ${area.toFixed(2)} m²%0A%0A` +
+                                 `*Precio estimado:* ${precioFormateado}`;
+            
+            document.getElementById("btn-wa").href = `https://wa.me{tuTelefonoWhatsApp}?text=${mensajeTexto}`;
+        } else {
+            document.getElementById("lbl-precio-pesos").textContent = "\$ 0";
+            document.getElementById("btn-wa").href = "#";
+        }
+    }
+
+    // Escuchar cambios en los inputs
+    document.getElementById("ancho").addEventListener("input", calcularPrecios);
+    document.getElementById("profundidad").addEventListener("input", calcularPrecios);
+
+    // Carga inicial
+    window.onload = cargarModelos;
+</script>
+
+</body>
+</html>
