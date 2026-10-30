@@ -11,6 +11,7 @@
             --card-bg: #ffffff;
             --text-color: #333333;
             --border-color: #cccccc;
+            --whatsapp-color: #25d366;
         }
 
         body {
@@ -85,6 +86,28 @@
 
         .btn-cotizar:hover {
             background-color: #b71c1c;
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            background-color: var(--whatsapp-color);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebd56;
         }
 
         .resultado-box {
@@ -167,13 +190,18 @@
         <p>Valor base por m²: <span id="resValorM2" style="font-weight: bold;"></span> USD</p>
         <p class="resultado-destacado">Total: <span id="resUSD"></span> USD</p>
         <p class="resultado-destacado">Total estimado: <span id="resARS"></span> ARS</p>
+        
+        <button class="btn-whatsapp" id="btnWhatsApp">
+            Enviar presupuesto por WhatsApp
+        </button>
     </div>
 </div>
 
 <script>
     const TIPO_CAMBIO = 1600;
+    // REEMPLAZÁ CON TU NÚMERO DE TELÉFONO DE WHATSAPP (Código de país + código de área sin el 15)
+    const WHATSAPP_NUMERO = "5491123456789"; 
 
-    // Matriz de precios oficial cargada con tus 120 combinaciones exactas
     const matrizPrecios = [
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
@@ -218,11 +246,3 @@
         {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
         {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
         {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
-        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
-        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
-        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
-        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Sin brasero", v:570},
