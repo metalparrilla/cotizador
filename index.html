@@ -115,7 +115,7 @@
     
     <div class="form-group">
         <label for="altura">Altura del emparrillado</label>
-        <select id="altura" onchange="actualizarCombinaciones()">
+        <select id="altura">
             <option value="Fija">Fija</option>
             <option value="Variable">Variable</option>
         </select>
@@ -123,21 +123,21 @@
 
     <div class="form-group">
         <label for="modelo">Modelo</label>
-        <select id="modelo" onchange="actualizarCombinaciones()">
+        <select id="modelo">
             <!-- Se llena dinámicamente -->
         </select>
     </div>
 
     <div class="form-group">
         <label for="estructura">Material de la Estructura</label>
-        <select id="estructura" onchange="actualizarCombinaciones()">
+        <select id="estructura">
             <!-- Se llena dinámicamente -->
         </select>
     </div>
 
     <div class="form-group">
         <label for="emparrillado">Material del Emparrillado</label>
-        <select id="emparrillado" onchange="actualizarCombinaciones()">
+        <select id="emparrillado">
             <!-- Se llena dinámicamente -->
         </select>
     </div>
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <button class="btn-cotizar" onclick="calcularCotizacion()">Calcular Presupuesto</button>
+    <button class="btn-cotizar" id="btnCalcular">Calcular Presupuesto</button>
 
     <div id="resultado" class="resultado-box">
         <p>Área total estimada: <span id="resArea" style="font-weight: bold;"></span> m²</p>
@@ -171,10 +171,8 @@
 </div>
 
 <script>
-    // Tipo de cambio base extraído de tu archivo original ($1600)
     const TIPO_CAMBIO = 1600;
 
-    // Matriz simplificada indexada para cotizaciones rápidas basadas en tus datos validados
     const matrizPrecios = [
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
@@ -224,3 +222,6 @@
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Ángulo inoxidable", bra:"Tipo V", v:645},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Tipo V", v:645},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta chapa", v:645},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta vitro", v:645},
+        {alt:"Variable", mod:"Mecano", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:650},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta chapa", v:650},
