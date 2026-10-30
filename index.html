@@ -114,7 +114,7 @@
     <h2>Cotizá tu Parrilla</h2>
     
     <div class="form-group">
-        <label for="altura">Altura del emparrillado</label>
+        <label for="altura">¿Altura fija o variable?</label>
         <select id="altura">
             <option value="Fija">Fija</option>
             <option value="Variable">Variable</option>
@@ -124,28 +124,28 @@
     <div class="form-group">
         <label for="modelo">Modelo</label>
         <select id="modelo">
-            <!-- Cargado dinámicamente -->
+            <!-- Dinámico -->
         </select>
     </div>
 
     <div class="form-group">
         <label for="estructura">Material de la Estructura</label>
         <select id="estructura">
-            <!-- Cargado dinámicamente -->
+            <!-- Dinámico -->
         </select>
     </div>
 
     <div class="form-group">
         <label for="emparrillado">Material del Emparrillado</label>
         <select id="emparrillado">
-            <!-- Cargado dinámicamente -->
+            <!-- Dinámico -->
         </select>
     </div>
 
     <div class="form-group">
         <label for="brasero">Brasero</label>
         <select id="brasero">
-            <!-- Cargado dinámicamente -->
+            <!-- Dinámico -->
         </select>
     </div>
 
@@ -173,55 +173,56 @@
 <script>
     const TIPO_CAMBIO = 1600;
 
+    // Matriz de precios oficial cargada con tus 120 combinaciones exactas
     const matrizPrecios = [
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Sin brasero", v:405},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Sin brasero", v:405},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Sin brasero", v:420},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Sin brasero", v:420},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Tipo V", v:450},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Tipo V", v:450},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:455},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:455},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Tipo V", v:425},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Tipo V", v:425},
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Tipo U", v:475},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Tipo U", v:475},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Inoxidable redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Inoxidable redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Hierro redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Hierro redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Hierro redondo", bra:"Puerta vitro", v:484},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Ángulo inoxidable", bra:"Sin brasero", v:495},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Sin brasero", v:495},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo V", v:535},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo V", v:535},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta chapa", v:535},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta vitro", v:535},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta chapa", v:540},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta vitro", v:545},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo V", v:560},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo V", v:560},
-        {alt:"Variable", mod:"Mecano", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:565},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Ángulo inoxidable", bra:"Sin brasero", v:570},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Ángulo inoxidable", bra:"Sin brasero", v:570},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Hierro redondo", bra:"Puerta chapa", v:570},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Hierro redondo", bra:"Puerta chapa", v:570},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo U", v:585},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo U", v:585},
-        {alt:"Variable", mod:"Mecano", est:"Hierro", emp:"Hierro redondo", bra:"Abierto", v:600},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Hierro redondo", bra:"Tipo V", v:600},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Hierro redondo", bra:"Tipo V", v:600},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:510},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:510},
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Puerta vitro", v:610},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro redondo", bra:"Puerta vitro", v:610},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo U", v:615},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo U", v:615},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta chapa", v:615},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta chapa", v:620},
-        {alt:"Fija", mod:"Clásica", est:"Inoxidable", emp:"Hierro redondo", bra:"Tipo U", v:620},
-        {alt:"Fija", mod:"Flotante", est:"Inoxidable", emp:"Hierro redondo", bra:"Tipo U", v:620},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Ángulo inoxidable", bra:"Tipo V", v:645},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Tipo V", v:645},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta chapa", v:645},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta vitro", v:645},
-        {alt:"Variable", mod:"Mecano", est:"Hierro", emp:"Hierro redondo", bra:"Puerta chapa", v:650},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Ángulo inoxidable", bra:"Puerta chapa", v:650},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Sin brasero", v:420},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Sin brasero", v:420},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo V", v:535},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo V", v:535},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo U", v:585},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Tipo U", v:585},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta chapa", v:570},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta chapa", v:570},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta vitro", v:670},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Hierro ángulo", bra:"Puerta vitro", v:670},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Sin brasero", v:405},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Sin brasero", v:405},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo V", v:560},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo V", v:560},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo U", v:610},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Tipo U", v:610},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta chapa", v:525},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta chapa", v:525},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta vitro", v:625},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable redondo", bra:"Puerta vitro", v:625},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Sin brasero", v:495},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Sin brasero", v:495},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo V", v:645},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo V", v:645},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo U", v:695},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo U", v:695},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta chapa", v:585},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta chapa", v:585},
+        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta vitro", v:685},
+        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta vitro", v:685},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Sin brasero", v:570},
