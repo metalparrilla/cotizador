@@ -11,7 +11,6 @@
             --card-bg: #ffffff;
             --text-color: #333333;
             --border-color: #cccccc;
-            --whatsapp-color: #25d366;
         }
 
         body {
@@ -90,7 +89,7 @@
 
         .btn-whatsapp {
             width: 100%;
-            background-color: var(--whatsapp-color);
+            background-color: #25D366;
             color: white;
             padding: 12px;
             border: none;
@@ -99,15 +98,15 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
         }
 
         .btn-whatsapp:hover {
-            background-color: #1ebd56;
+            background-color: #128C7E;
         }
 
         .resultado-box {
@@ -147,28 +146,42 @@
     <div class="form-group">
         <label for="modelo">Modelo</label>
         <select id="modelo">
-            <!-- Dinámico -->
+            <option value="Clásica">Clásica</option>
+            <option value="Flotante">Flotante</option>
+            <option value="Mecano">Mecano</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="estructura">Material de la Estructura</label>
         <select id="estructura">
-            <!-- Dinámico -->
+            <option value="Hierro">Hierro</option>
+            <option value="Enlozado">Enlozado</option>
+            <option value="Inoxidable">Inoxidable</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="emparrillado">Material del Emparrillado</label>
         <select id="emparrillado">
-            <!-- Dinámico -->
+            <option value="Hierro redondo">Hierro redondo</option>
+            <option value="Hierro ángulo">Hierro ángulo</option>
+            <option value="Inoxidable redondo">Inoxidable redondo</option>
+            <option value="Inoxidable ángulo">Inoxidable ángulo</option>
+            <option value="Enlozado redondo">Enlozado redondo</option>
+            <option value="Enlozado ángulo">Enlozado ángulo</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="brasero">Brasero</label>
         <select id="brasero">
-            <!-- Dinámico -->
+            <option value="Sin brasero">Sin brasero</option>
+            <option value="Abierto">Abierto</option>
+            <option value="Tipo V">Tipo V</option>
+            <option value="Tipo U">Tipo U</option>
+            <option value="Puerta chapa">Puerta chapa</option>
+            <option value="Puerta vitro">Puerta vitro</option>
         </select>
     </div>
 
@@ -184,23 +197,19 @@
     </div>
 
     <button class="btn-cotizar" id="btnCalcular">Calcular Presupuesto</button>
+    <a href="#" target="_blank" class="btn-whatsapp" id="btnWhatsApp">Enviar a WhatsApp</a>
 
     <div id="resultado" class="resultado-box">
         <p>Área total estimada: <span id="resArea" style="font-weight: bold;"></span> m²</p>
         <p>Valor base por m²: <span id="resValorM2" style="font-weight: bold;"></span> USD</p>
         <p class="resultado-destacado">Total: <span id="resUSD"></span> USD</p>
         <p class="resultado-destacado">Total estimado: <span id="resARS"></span> ARS</p>
-        
-        <button class="btn-whatsapp" id="btnWhatsApp">
-            Enviar por WhatsApp
-        </button>
     </div>
 </div>
 
 <script>
     const TIPO_CAMBIO = 1600;
-    // Poné acá tu número de celular de la empresa completo (con código de país, ej: 5491123456789)
-    const NUMERO_WHATSAPP = "5491123456789"; 
+    const NUMERO_WHATSAPP = "5491159367696"; // Poné acá tu número completo de WhatsApp con código de área (sin espacios ni el signo +)
 
     const matrizPrecios = [
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Hierro redondo", bra:"Sin brasero", v:330},
@@ -237,12 +246,3 @@
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Sin brasero", v:495},
         {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo V", v:645},
         {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo V", v:645},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo U", v:695},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Tipo U", v:695},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta chapa", v:585},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta chapa", v:585},
-        {alt:"Fija", mod:"Clásica", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta vitro", v:685},
-        {alt:"Fija", mod:"Flotante", est:"Hierro", emp:"Inoxidable ángulo", bra:"Puerta vitro", v:685},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Sin brasero", v:480},
-        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
