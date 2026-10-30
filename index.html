@@ -6,7 +6,7 @@
     <title>Cotizador Online de Parrillas</title>
     <style>
         :root {
-            --primary-color: #d32f2f;
+            --primary-color: #25D366;
             --bg-color: #f5f5f5;
             --card-bg: #ffffff;
             --text-color: #333333;
@@ -34,7 +34,7 @@
 
         h2 {
             text-align: center;
-            color: var(--primary-color);
+            color: #d32f2f;
             margin-top: 0;
             margin-bottom: 25px;
         }
@@ -69,11 +69,11 @@
             flex: 1;
         }
 
-        .btn-cotizar {
+        .btn-whatsapp {
             width: 100%;
             background-color: var(--primary-color);
             color: white;
-            padding: 12px;
+            padding: 14px;
             border: none;
             border-radius: 6px;
             font-size: 16px;
@@ -81,48 +81,11 @@
             cursor: pointer;
             transition: background 0.2s;
             margin-top: 10px;
-        }
-
-        .btn-cotizar:hover {
-            background-color: #b71c1c;
-        }
-
-        .btn-whatsapp {
-            width: 100%;
-            background-color: #25D366;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
         .btn-whatsapp:hover {
             background-color: #128C7E;
-        }
-
-        .resultado-box {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #ffebee;
-            border-left: 5px solid var(--primary-color);
-            border-radius: 4px;
-            display: none;
-        }
-
-        .resultado-box p {
-            margin: 8px 0;
-            font-size: 16px;
-        }
-
-        .resultado-destacado {
-            font-size: 20px !important;
-            font-weight: bold;
-            color: var(--primary-color);
         }
     </style>
 </head>
@@ -178,16 +141,7 @@
         </div>
     </div>
 
-    <button class="btn-cotizar" id="btnCalcular">Calcular Presupuesto</button>
-
-    <div id="resultado" class="resultado-box">
-        <p>Área total estimada: <span id="resArea" style="font-weight: bold;"></span> m²</p>
-        <p>Valor base por m²: <span id="resValorM2" style="font-weight: bold;"></span> USD</p>
-        <p class="resultado-destacado">Total: <span id="resUSD"></span> USD</p>
-        <p class="resultado-destacado">Total estimado: <span id="resARS"></span> ARS</p>
-        
-        <button class="btn-whatsapp" id="btnWhatsApp">Enviar presupuesto por WhatsApp</button>
-    </div>
+    <button class="btn-whatsapp" id="btnEnviarWhatsApp">Enviar cotización a WhatsApp</button>
 </div>
 
 <script>
@@ -241,3 +195,17 @@
         {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo V", v:680},
         {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
         {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Tipo U", v:730},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta chapa", v:680},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado redondo", bra:"Puerta vitro", v:780},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Sin brasero", v:570},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado ángulo", bra:"Sin brasero", v:570},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Tipo V", v:760},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado ángulo", bra:"Tipo V", v:760},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Tipo U", v:810},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado ángulo", bra:"Tipo U", v:810},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Puerta chapa", v:740},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado ángulo", bra:"Puerta chapa", v:740},
+        {alt:"Fija", mod:"Clásica", est:"Enlozado", emp:"Enlozado ángulo", bra:"Puerta vitro", v:840},
+        {alt:"Fija", mod:"Flotante", est:"Enlozado", emp:"Enlozado ángulo", bra:"Puerta vitro", v:840},
