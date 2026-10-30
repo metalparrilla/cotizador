@@ -178,24 +178,16 @@
             return;
         }
 
-        // --- SISTEMA MATEMÁTICO INDESTRUCTIBLE DE CÁLCULO ---
-        let valorM2 = 330; // Valor base por defecto (Fija + Clásica + Hierro)
+        let valorM2 = 330;
 
-        // 1. Modificadores por Altura / Modelo
         if (alt === "Variable" || mod === "Mecano") {
-            valorM2 += 235; // Plus para bases Mecano / Variable
-        } else if (mod === "Flotante") {
-            valorM2 += 0; // Tienen el mismo costo base en tu lista
+            valorM2 += 235;
         }
 
-        // 2. Modificadores por Estructura
-        if (est === "Enlozado") {
-            valorM2 += 150;
-        } else if (est === "Inoxidable") {
+        if (est === "Enlozado" || est === "Inoxidable") {
             valorM2 += 150;
         }
 
-        // 3. Modificadores por Emparrillado
         if (emp === "Hierro ángulo") {
             valorM2 += 90;
         } else if (emp === "Inoxidable redondo") {
@@ -206,7 +198,6 @@
             valorM2 += 150;
         }
 
-        // 4. Modificadores por Brasero
         if (bra === "Abierto") {
             valorM2 += 35;
         } else if (bra === "Tipo V") {
@@ -219,7 +210,6 @@
             valorM2 += 280;
         }
 
-        // Ajuste estricto de topes de tu lista comercial ($330 a $1410)
         if (valorM2 < 330) valorM2 = 330;
         if (valorM2 > 1410) valorM2 = 1410;
 
@@ -235,7 +225,8 @@
                         `• Dimensiones: ${ancho.toFixed(2)}m x ${prof.toFixed(2)}m (Área: ${area.toFixed(2)} m²)\n\n` +
                         `*Total estimado: ${totalUSD.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD / ${totalARS.toLocaleString('es-AR', {maximumFractionDigits: 0})} ARS*`;
         
-        const url = `https://wa.me{5491159367696}?text=${encodeURIComponent(mensaje)}`;
+        // DIRECCIÓN CORREGIDA CON LA BARRA DIAGONAL CORRECTA
+        const url = "https://wa.me" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(mensaje);
         window.location.href = url;
     }
 
